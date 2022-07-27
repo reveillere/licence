@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/reveillere/licence/static/css/main.9bd973b1.css",
+    "main.js": "/reveillere/licence/static/js/main.9a265999.js",
+    "index.html": "/reveillere/licence/index.html",
+    "main.9bd973b1.css.map": "/reveillere/licence/static/css/main.9bd973b1.css.map",
+    "main.9a265999.js.map": "/reveillere/licence/static/js/main.9a265999.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.9bd973b1.css",
+    "static/js/main.9a265999.js"
+  ]
+}
