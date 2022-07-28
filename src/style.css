@@ -11,14 +11,14 @@
 
 .form-file-upload {
     height: 8rem;
-    width: 40rem;
+    width: 45rem;
     max-width: 100%;
     text-align: center;
     position: relative;
 }
 
 .file-item {
-    width: 40rem;
+    width: 45rem;
     margin-bottom: 0.5rem;
 }
 
@@ -41,7 +41,7 @@
     background-color: #e6edf4;
 }
 
-.file-item .btn button {
+.file-item .buttons button {
     border: none;
     background-color: transparent;
     padding-right: .5rem;

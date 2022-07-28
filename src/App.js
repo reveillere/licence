@@ -1,15 +1,17 @@
 import React, {useState} from "react";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import "./style.css";
 
 import DragDropFile from "./DragDropFile";
 import {readXMLFile} from "./lib";
 import exportFromJSON from "export-from-json";
 
+
 export default function App() {
     const [etapeFiles, setEtapeFiles] = useState([]);
     const [ues, setUEs] = useState([]);
 
-    const readEtapeFile = xmlData => {
+    const processEtape = xmlData => {
         const students = xmlData.EEDIER10.LIST_G_CGE.G_CGE.LIST_G_ETP.G_ETP.LIST_G_IAE.G_IAE;
         const repeating = students
             .filter(student => student.NBR_INS_ETP > 1)
@@ -33,11 +35,11 @@ export default function App() {
     }
 
     const viewFile = file => {
-        const exportType =  exportFromJSON.types.csv
+        const exportType =  exportFromJSON.types.xls
         const data = file.opt;
         const processor = f => f;
         const output = exportFromJSON({ data, exportType, processor });
-        alert(output);
+        return output;
     }
 
     const info = file => {
@@ -64,7 +66,7 @@ export default function App() {
                 }}
                 viewFile={viewFile}
                 readFile={async file => await readXMLFile(file)}
-                processFile={readEtapeFile}
+                processFile={processEtape}
             />
             <div style={ {marginTop: "5rem"}}>
             { etapeFiles.length === 1 ?
