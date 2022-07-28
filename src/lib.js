@@ -1,5 +1,6 @@
 import {XMLParser} from "fast-xml-parser";
 import { saveAs } from 'file-saver';
+import exportFromJSON from 'export-from-json'
 
 export function readFileAsync(file) {
     return new Promise((resolve, reject) => {
@@ -31,6 +32,12 @@ export async function parse(file) {
 export const saveJSON = json => {
     console.log('save as');
     return saveAs(new Blob([JSON.stringify(json, null, 2)], {type: "application/json"}), Date.now());
+}
+
+export const saveAsXlsx = data => {
+    const fileName = 'testme';
+    const exportType =  exportFromJSON.types.csv
+    return exportFromJSON({ json, fileName, exportType });
 }
 
 export const readXMLFile = async file => {

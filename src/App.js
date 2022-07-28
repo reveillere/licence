@@ -2,7 +2,7 @@ import React, {useState} from "react";
 import "./style.css";
 
 import DragDropFile from "./DragDropFile";
-import {saveJSON, readXMLFile} from "./lib";
+import {saveJSON, readXMLFile, saveAsXlsx} from "./lib";
 
 export default function App() {
     const [etapeFiles, setEtapeFiles] = useState([]);
@@ -69,7 +69,7 @@ export default function App() {
                     multiple={true}
                     fileInfo={info}
                     viewFile={viewFile}
-                    saveFile={file => saveJSON(file.data)}
+                    saveFile={file => saveAsXlsx(file.data)}
                     processFile={processUE}
                 />
                 </> : "" }
