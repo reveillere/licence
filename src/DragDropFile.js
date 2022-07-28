@@ -3,12 +3,13 @@ import DragDropInputFile from "./DragDropInputFile";
 import DragDropFileItemList from "./DragDropFileItemList";
 import { v4 } from "uuid";
 
-export default function DragDropFile({ files, setFiles, processFile = f => null, ...args} ) {
+export default function DragDropFile({ files, setFiles, readFile, processFile = f => null, ...args} ) {
 
     const handleFiles = async items => {
         const newFiles = await Promise.all([...items].map(async f => {
-            const data = await processFile(f);
-            return {id: v4(), file: f, data: data};
+            const content = await readFile(f);
+            const opt = await processFile(content);
+            return {id: v4(), fd: f, content, opt};
         }));
         setFiles(newFiles);
     }

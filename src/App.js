@@ -2,15 +2,15 @@ import React, {useState} from "react";
 import "./style.css";
 
 import DragDropFile from "./DragDropFile";
-import {saveJSON, readXMLFile, saveAsXlsx} from "./lib";
+import {readXMLFile} from "./lib";
+import exportFromJSON from "export-from-json";
 
 export default function App() {
     const [etapeFiles, setEtapeFiles] = useState([]);
     const [ues, setUEs] = useState([]);
 
-    const readEtapeFile = async file => {
-        const data = await readXMLFile(file);
-        const students = data.EEDIER10.LIST_G_CGE.G_CGE.LIST_G_ETP.G_ETP.LIST_G_IAE.G_IAE;
+    const readEtapeFile = xmlData => {
+        const students = xmlData.EEDIER10.LIST_G_CGE.G_CGE.LIST_G_ETP.G_ETP.LIST_G_IAE.G_IAE;
         const repeating = students
             .filter(student => student.NBR_INS_ETP > 1)
             .map(student => ({
@@ -21,10 +21,9 @@ export default function App() {
         return repeating;
     }
 
-    const processUE = async file => {
-        const data = await readXMLFile(file);
-        const repeating = etapeFiles[0].data.map(student => student.id);
-        const students = data.ERCS2R10.LIST_G_TRI.G_TRI.LIST_G_RES.G_RES.LIST_G_RES_IND.G_RES_IND;
+    const processUE = xmlData => {
+        const repeating = etapeFiles[0].opt.map(student => student.id);
+        const students = xmlData.ERCS2R10.LIST_G_TRI.G_TRI.LIST_G_RES.G_RES.LIST_G_RES_IND.G_RES_IND;
         const repeatingADM = students.filter(student => repeating.includes(student.COD_ETU) && student.COD_TRE === 'ADM');
         return repeatingADM.map(student => ({
             id: student.COD_ETU,
@@ -34,13 +33,16 @@ export default function App() {
     }
 
     const viewFile = file => {
-        const content = JSON.stringify(file.data);
-        alert(content);
+        const exportType =  exportFromJSON.types.csv
+        const data = file.opt;
+        const processor = f => f;
+        const output = exportFromJSON({ data, exportType, processor });
+        alert(output);
     }
 
     const info = file => {
-        const nb = file.data.length;
-        if (file.data)
+        const nb = file.opt.length;
+        if (file.opt)
             return (`${nb} étudiant`) + (nb > 1 ? "s" : "") ;
     }
 
@@ -54,8 +56,14 @@ export default function App() {
                 types={["xml"]}
                 multiple={false}
                 fileInfo={info}
-                saveFile={file => saveJSON(file.data)}
+                saveFile={async file => {
+                    const fileName = file.content.EEDIER10.LIST_G_CGE.G_CGE.LIST_G_ETP.G_ETP.COD_ETP;
+                    const exportType =  exportFromJSON.types.csv
+                    const data = file.opt;
+                    return exportFromJSON({ data, fileName, exportType });
+                }}
                 viewFile={viewFile}
+                readFile={async file => await readXMLFile(file)}
                 processFile={readEtapeFile}
             />
             <div style={ {marginTop: "5rem"}}>
@@ -69,7 +77,13 @@ export default function App() {
                     multiple={true}
                     fileInfo={info}
                     viewFile={viewFile}
-                    saveFile={file => saveAsXlsx(file.data)}
+                    saveFile={async file => {
+                        const fileName = file.content.ERCS2R10.LIST_G_TRI.G_TRI.LIST_G_RES.G_RES.COD_RES;
+                        const exportType =  exportFromJSON.types.csv
+                        const data = file.opt;
+                        return exportFromJSON({ data, fileName, exportType });
+                    }}
+                    readFile={async file => await readXMLFile(file)}
                     processFile={processUE}
                 />
                 </> : "" }

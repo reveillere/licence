@@ -18,7 +18,7 @@ export default function DragDropFileItemList({
             {items.map( (file) => (
                 <DragDropFileItem
                     key={file.id}
-                    name={file.file.name}
+                    name={file.fd.name}
                     onRemove={() => onRemoveFile(file.id)}
                     onView={viewFile ? () => viewFile(file) : null}
                     saveAs={saveFile ? () => saveFile(file) : null}
