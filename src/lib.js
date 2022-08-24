@@ -35,3 +35,18 @@ export const readXMLFile = async file => {
     const data = parser.parse(text);
     return data;
 }
+
+export const exportFile = (file, exportType) => {
+    const data = file.opt;
+    const processor = f => f;
+    return exportFromJSON({ data, exportType, processor });
+}
+
+export const fileNameChangeExtension = (fileName, ext) => fileName.replace(/\.[^/.]+$/, "."+ext)
+
+export const saveFile = async (file, exportType) => {
+    const fileName = fileNameChangeExtension(file.fd.name, exportType);
+    const data = await exportFile(file, exportType);
+    const blob = new Blob([data], {type: "text/csv;charset=utf-8"});
+    saveAs(blob, fileName);
+}

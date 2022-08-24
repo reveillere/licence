@@ -2,8 +2,11 @@ import React from "react";
 import DragDropInputFile from "./DragDropInputFile";
 import DragDropFileItemList from "./DragDropFileItemList";
 import { v4 } from "uuid";
+import exportFromJSON from "export-from-json";
 
-export default function DragDropFile({ files, setFiles, readFile, processFile = f => null, ...args} ) {
+export default function DragDropFile({
+        exportType = exportFromJSON.types.csv,
+        files, setFiles, readFile, processFile = f => null, ...args} ) {
 
     const handleFiles = async items => {
         const newFiles = await Promise.all([...items].map(async f => {
@@ -23,6 +26,7 @@ export default function DragDropFile({ files, setFiles, readFile, processFile = 
                 const newFiles = files.filter(file => file.id !== id);
                 setFiles(newFiles);
             }}
+            exportType = {exportType}
             {...args}
         />
         </>

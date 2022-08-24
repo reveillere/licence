@@ -3,9 +3,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import "./style.css";
 
 import DragDropFile from "./DragDropFile";
-import {readXMLFile} from "./lib";
-import exportFromJSON from "export-from-json";
-
+import {exportFile, readXMLFile} from "./lib";
 
 export default function App() {
     const [etapeFiles, setEtapeFiles] = useState([]);
@@ -34,13 +32,6 @@ export default function App() {
         }));
     }
 
-    const viewFile = file => {
-        const exportType =  exportFromJSON.types.xls
-        const data = file.opt;
-        const processor = f => f;
-        const output = exportFromJSON({ data, exportType, processor });
-        return output;
-    }
 
     const info = file => {
         const nb = file.opt.length;
@@ -51,40 +42,26 @@ export default function App() {
     return (
         <div className="App">
             <h1>Gestion des redoublants</h1>
-            <h2>Extraction des redoublants</h2>
+            <h3 style={{marginTop: "1rem"}}>Extraction des redoublants (fichier étape)</h3>
             <DragDropFile
                 files={etapeFiles}
                 setFiles={setEtapeFiles}
                 types={["xml"]}
                 multiple={false}
                 fileInfo={info}
-                saveFile={async file => {
-                    const fileName = file.content.EEDIER10.LIST_G_CGE.G_CGE.LIST_G_ETP.G_ETP.COD_ETP;
-                    const exportType =  exportFromJSON.types.csv
-                    const data = file.opt;
-                    return exportFromJSON({ data, fileName, exportType });
-                }}
-                viewFile={viewFile}
                 readFile={async file => await readXMLFile(file)}
                 processFile={processEtape}
             />
             <div style={ {marginTop: "5rem"}}>
             { etapeFiles.length === 1 ?
                 <>
-                <h2>Listes des UEs</h2>
+                <h3>Listes des UEs</h3>
                 <DragDropFile
                     files={ues}
                     setFiles={setUEs}
                     types={["xml"]}
                     multiple={true}
                     fileInfo={info}
-                    viewFile={viewFile}
-                    saveFile={async file => {
-                        const fileName = file.content.ERCS2R10.LIST_G_TRI.G_TRI.LIST_G_RES.G_RES.COD_RES;
-                        const exportType =  exportFromJSON.types.csv
-                        const data = file.opt;
-                        return exportFromJSON({ data, fileName, exportType });
-                    }}
                     readFile={async file => await readXMLFile(file)}
                     processFile={processUE}
                 />
