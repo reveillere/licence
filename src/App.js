@@ -16,7 +16,8 @@ export default function App() {
             .map(student => ({
                 id: student.COD_ETU,
                 lastname: student.UPPER_IND_LIB_NOM_PAT_IND_DECO,
-                firstname: student.INITCAP_IND_LIB_PR1_IND_
+                firstname: student.INITCAP_IND_LIB_PR1_IND_,
+                etape: student.NBR_INS_ETP
             }));
         return repeating;
     }
@@ -28,7 +29,8 @@ export default function App() {
         return repeatingADM.map(student => ({
             id: student.COD_ETU,
             lastname: student.LIB_NOM_PAT_IND,
-            firstname: student.LIB_PR1_IND
+            firstname: student.LIB_PR1_IND,
+            note: student.NOT_RES
         }));
     }
 
