@@ -6,6 +6,7 @@ import exportFromJSON from "export-from-json";
 
 export default function DragDropFile({
         exportType = exportFromJSON.types.csv,
+        append = false,
         files, setFiles, readFile, processFile = f => null, ...args} ) {
 
     const handleFiles = async items => {
@@ -14,7 +15,10 @@ export default function DragDropFile({
             const opt = await processFile(content);
             return {id: v4(), fd: f, content, opt};
         }));
-        setFiles(newFiles);
+        if (append)
+            setFiles([...files, ...newFiles]);
+        else
+            setFiles(newFiles);
     }
 
     return (

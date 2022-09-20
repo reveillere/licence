@@ -61,6 +61,7 @@ export default function App() {
                 <DragDropFile
                     files={ues}
                     setFiles={setUEs}
+                    append={true}
                     types={["xml"]}
                     multiple={true}
                     fileInfo={info}
