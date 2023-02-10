@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "./style.css";
 
@@ -40,6 +40,10 @@ export default function App() {
         if (file.opt)
             return (`${nb} étudiant`) + (nb > 1 ? "s" : "") ;
     }
+
+    useEffect(() => {
+        document.title = "Gestion des redoublants";  
+      }, []);
 
     return (
         <div className="App">
