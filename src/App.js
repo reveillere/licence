@@ -26,11 +26,14 @@ export default function App() {
         const repeating = etapeFiles[0].opt.map(student => student.id);
         const students = xmlData.ERCS2R10.LIST_G_TRI.G_TRI.LIST_G_RES.G_RES.LIST_G_RES_IND.G_RES_IND;
         const repeatingADM = students.filter(student => repeating.includes(student.COD_ETU) && student.COD_TRE === 'ADM');
+        const code = xmlData.ERCS2R10.LIST_G_TRI.G_TRI.LIST_G_RES.G_RES.COD_RES;
+        console.log('Code RES : ' + code);
         return repeatingADM.map(student => ({
             id: student.COD_ETU,
             lastname: student.LIB_NOM_PAT_IND,
             firstname: student.LIB_PR1_IND,
-            note: student.NOT_RES
+            note: student.NOT_RES,
+            code: code
         }));
     }
 

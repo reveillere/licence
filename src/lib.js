@@ -42,6 +42,11 @@ export const exportFile = (file, exportType) => {
     return exportFromJSON({ data, exportType, processor });
 }
 
+export const exportData = (data, exportType) => {
+    const processor = f => f;
+    return exportFromJSON({ data, exportType, processor });
+}
+
 export const fileNameChangeExtension = (fileName, ext) => fileName.replace(/\.[^/.]+$/, "."+ext)
 
 export const saveFile = async (file, exportType) => {

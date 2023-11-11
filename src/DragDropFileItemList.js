@@ -1,10 +1,12 @@
 import React from "react";
 import DragDropFileItem from "./DragDropFileItem"
-import {exportFile, fileNameChangeExtension, saveFile} from "./lib";
+import {exportFile, exportData, fileNameChangeExtension, saveFile} from "./lib";
 import JSZip from 'jszip';
 import { saveAs } from 'file-saver';
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faFileZipper} from "@fortawesome/free-solid-svg-icons";
+import exportFromJSON from 'export-from-json'
+
 
 export default function DragDropFileItemList({
         items = [],
@@ -26,9 +28,19 @@ export default function DragDropFileItemList({
         zip.generateAsync({type: "blob"}).then(content => saveAs(content, "UE_redoublants.zip"));
     }
 
+    async function  createMergedFile(items) {
+        const content = [].concat(...items.map(file => file.opt));
+        // console.log(data);
+        const fileName = fileNameChangeExtension("Fusion", exportType);
+        const data = await exportData(content, exportType);
+        const blob = new Blob([data], {type: "text/csv;charset=utf-8"});
+        saveAs(blob, fileName);
+    }
+
     function getZip(items) {
         return (
-            <button type="button" className="btn btn-primary float-end" onClick={() => createZipFile(items)}>Tout télécharger <FontAwesomeIcon icon={faFileZipper} /></button>
+            // <button type="button" className="btn btn-primary float-end" onClick={() => createZipFile(items)}>Zip <FontAwesomeIcon icon={faFileZipper} /></button>
+            <button type="button" className="btn btn-primary float-end" onClick={() => createMergedFile(items)}>Fichier unique <FontAwesomeIcon icon={faFileZipper} /></button>
         )
     }
 
